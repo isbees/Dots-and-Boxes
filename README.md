@@ -1,2 +1,2 @@
 # Dots-and-Boxes
-This is a simple game project.
+Dots and boxes game for APCS final project.
