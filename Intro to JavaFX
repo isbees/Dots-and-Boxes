@@ -6,21 +6,21 @@ import javafx.scene.text.*;
 
 public class Main extends Application {
 	@Override
-	public void start(Stage stage) {
-		stage.setTitle("Intro-ing");
+	public void start(Stage stage) { 
+		stage.setTitle("Intro-ing"); //Stage contains everything
 		stage.setWidth(400);
 		stage.setHeight(400);
-		Text text = new Text(10,100,"Sup World?");
-		text.setFont(new Font(12));
-		Scene scene = new Scene(new Group(text));
-		stage.setScene(scene);
-		stage.show();
+		Text text = new Text(10,100,"Sup World?"); //This is going to be shown in a scene
+		text.setFont(new Font(12)); //Size of text
+		Scene scene = new Scene(new Group(text)); //Scene has the actual thing to be shown
+		stage.setScene(scene); //Adds this scene to the stage
+		stage.show(); //Shows the stage, with the added scene
 	}
 	
 	public static void main(String[] args) {
-		launch(args);
+		launch(args); //Launches the start method
 	}
 }
-------------------------------------------------------------------------------------------------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Add a file named application.css and put this in:
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
