@@ -1,6 +1,11 @@
+package application;
+	
 import javafx.application.*;
 import javafx.stage.*;
 import javafx.scene.*;
+import javafx.scene.canvas.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 import javafx.scene.text.*;
 
 
@@ -10,9 +15,15 @@ public class Main extends Application {
 		stage.setTitle("Intro-ing"); //Stage contains everything
 		stage.setWidth(400);
 		stage.setHeight(400);
-		Text text = new Text(10,100,"Sup World?"); //Shown in a scene
+		Canvas carnie = new Canvas(); //To draw on
+		GraphicsContext g = carnie.getGraphicsContext2D(); //Graphics class
+		Circle c = new Circle(100,100,50); //A circle
+		c.setStroke(Color.BLACK); //Color of outline
+		Group root = new Group(); //Group holds our image
+		Text text = new Text(10,100,"Sup World?"); //Some words
 		text.setFont(new Font(12)); //Text size
-		Scene scene = new Scene(new Group(text)); //Scene contains thing that will be shown
+		root.getChildren().addAll(c,text); //Adds text and circle to group
+		Scene scene = new Scene(root); //Scene contains thing that will be shown
 		stage.setScene(scene); //Scene added to stage
 		stage.show(); //Shows the stage, scene included
 	}
@@ -21,7 +32,6 @@ public class Main extends Application {
 		launch(args); //Launches the start method above
 	}
 }
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Add a file named application.css and put this in:
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
