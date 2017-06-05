@@ -12,13 +12,17 @@ import javafx.scene.shape.*;
 public class Board extends Application {
 	private Circle[][] board;
 	private ArrayList<Point> theClicked;
+	private int p1Score;
+	private int p2Score;
+	private boolean p1Turn;
 	@Override
 	public void start(Stage stage) {
-		stage.setTitle("Dahrts And Burxes v 0.1.0"); //Stage contains everything
+		stage.setTitle("The Appatar v 0.1.2"); //Stage contains everything
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
 		board = new Circle[4][4];
+		p1Turn = true;
 		theClicked = new ArrayList<Point>();
 		int rows = 4 * 100;
 		int columns = 4 * 100;
@@ -80,6 +84,16 @@ public class Board extends Application {
 			int x2 = (int) theClicked.get(1).getX();
 			int y2 = (int) theClicked.get(1).getY();
 			ln = new Line(x1,y1,x2,y2);
+			if(p1Turn == true)
+			{
+				ln.setStroke(Color.GREEN);
+				p1Turn = false;
+			}
+			else if(p1Turn == false)
+			{
+				ln.setStroke(Color.RED);
+				p1Turn = true;
+			}
 			theClicked.remove(0);
 			theClicked.remove(0);
 		}
@@ -87,7 +101,7 @@ public class Board extends Application {
 		{
 			ln = new Line();
 		}
-		return ln; //CHANGE IMMEDIATELY
+		return ln;
 	}
 }
 
@@ -111,4 +125,6 @@ class Point
 		return false;
 	}
 }
+
+
 
