@@ -109,10 +109,18 @@ class Point
 {
 	private double x;
 	private double y;
+	private boolean d1;
+	private boolean d2;
+	private boolean d3;
+	private boolean d4;
 	public Point(double x, double y)
 	{
 		this.x = x;
 		this.y = y;
+		d1 = false;
+		d2 = false;
+		d3 = false;
+		d4 = false;
 	}
 	public double getX(){return x;}
 	public double getY(){return y;}
@@ -123,6 +131,25 @@ class Point
 			return true;
 		}
 		return false;
+	}
+	public void setDirectionTrue(int d)
+	{
+		if(d == 1)
+		{
+			d1 = true;
+		}
+		else if(d == 2)
+		{
+			d2 = true;
+		}
+		else if(d == 3)
+		{
+			d3 = true;
+		}
+		else if(d == 4)
+		{
+			d4 = true; 
+		}
 	}
 }
 
