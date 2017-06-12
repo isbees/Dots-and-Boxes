@@ -1,3 +1,5 @@
+package application;
+
 import javafx.application.*;
 import javafx.event.EventHandler.*;
 import javafx.event.*;
@@ -17,7 +19,7 @@ public class Board extends Application {
 	private boolean p1Turn;
 	@Override
 	public void start(Stage stage) {
-		stage.setTitle("The Appatar v 0.1.2"); //Stage contains everything
+		stage.setTitle("The Appatar v 0.1.5"); //Stage contains everything
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
@@ -77,6 +79,30 @@ public class Board extends Application {
 	public Line checkIfPaired()
 	{
 		Line ln;
+		if(theClicked.size() == 2 && (theClicked.get(0).getX() < theClicked.get(1).getX() && theClicked.get(0).getY() < theClicked.get(1).getY()))
+		{
+			theClicked.remove(0);
+			theClicked.remove(0);
+			ln = new Line();
+		}
+		else if(theClicked.size() == 2 && (theClicked.get(0).getX() > theClicked.get(1).getX() && theClicked.get(0).getY() > theClicked.get(1).getY()))
+		{
+			theClicked.remove(0);
+			theClicked.remove(0);
+			ln = new Line();
+		}
+		else if(theClicked.size() == 2 && (theClicked.get(0).getX() > theClicked.get(1).getX() && theClicked.get(0).getY() < theClicked.get(1).getY()))
+		{
+			theClicked.remove(0);
+			theClicked.remove(0);
+			ln = new Line();
+		}
+		else if(theClicked.size() == 2 && (theClicked.get(0).getX() < theClicked.get(1).getX() && theClicked.get(0).getY() > theClicked.get(1).getY()))
+		{
+			theClicked.remove(0);
+			theClicked.remove(0);
+			ln = new Line();
+		}
 		if(theClicked.size() == 2)
 		{
 			int x1 = (int) theClicked.get(0).getX();
@@ -102,6 +128,29 @@ public class Board extends Application {
 			ln = new Line();
 		}
 		return ln;
+	}
+	
+	public void setDirections()
+	{
+		if(theClicked.get(0).getX() < theClicked.get(1).getX())
+		{
+			theClicked.get(0).setDirectionTrue(2);
+			theClicked.get(1).setDirectionTrue(4);
+		}
+		else if(theClicked.get(0).getX() > theClicked.get(1).getX())
+		{
+			theClicked.get(0).setDirectionTrue(4);
+			theClicked.get(1).setDirectionTrue(2);
+		}
+		else if(theClicked.get(0).getY() < theClicked.get(1).getY())
+		{
+			theClicked.get(0).setDirectionTrue(3);
+			theClicked.get(1).setDirectionTrue(1);
+		}
+		else if(theClicked.get(0).getY() > theClicked.get(1).getY())
+		{
+			theClicked.get(0).setDirectionTrue(1);
+			theClicked.get(1).setDirectionTrue(3);
 	}
 }
 
@@ -152,6 +201,4 @@ class Point
 		}
 	}
 }
-
-
-
+}
