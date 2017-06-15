@@ -12,10 +12,11 @@ import javafx.scene.shape.*;
 
 
 public class Board extends Application {
-	private Circle[][] board;		// contains all dots
+	private Circle[][] board;
 	private ArrayList<Point> theClicked;
 	private int p1Score;
 	private int p2Score;
+	private int previousBoxes; //To prevent recounting the same box
 	private boolean p1Turn;
 	@Override
 	public void start(Stage stage) {
@@ -23,25 +24,26 @@ public class Board extends Application {
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
-		board = new Circle[4][4]; //array 4by4
+		board = new Circle[4][4];
 		p1Turn = true;
 		theClicked = new ArrayList<Point>();
 		int rows = 4 * 100;
 		int columns = 4 * 100;
 		int r = 0;
 		int c = 0;
+		previousBoxes = 0;
 		for(int x = 10; x < rows; x+=100)
 		{
 			for(int y = 10; y < columns; y+= 100)
 			{
 				Circle ci = new Circle(x,y,5);
-				board[r][c] = ci;		//adds the dots into the board
-				c++;				//left to right
+				board[r][c] = ci;
+				c++;
 				ci.setStroke(Color.BLACK);
 				root.getChildren().add(ci);
 			}
-			r++; 					//down
-			c = 0;					//reset
+			r++;
+			c = 0;
 		}
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
@@ -64,7 +66,7 @@ public class Board extends Application {
 					Line ln = checkIfPaired();
 					if(ln.getStartX() != 0)
 					{
-						root.getChildren().add(ln); //LINE DRAWN HERE
+						root.getChildren().add(ln);
 					}
 				}
 			}
@@ -112,12 +114,12 @@ public class Board extends Application {
 			ln = new Line(x1,y1,x2,y2);
 			if(p1Turn == true)
 			{
-				ln.setStroke(Color.GREEN); //player 1
+				ln.setStroke(Color.GREEN);
 				p1Turn = false;
 			}
 			else if(p1Turn == false)
 			{
-				ln.setStroke(Color.RED); //player 2
+				ln.setStroke(Color.RED);
 				p1Turn = true;
 			}
 			theClicked.remove(0);
@@ -200,7 +202,7 @@ class Point //All of the clickable circles are points
 			d4 = true; 
 		}
 	}
-		public boolean returnDirection(int d) //Return direction value
+	public boolean returnDirection(int d) //Return direction value
 	{
 		if(d == 1)
 		{
@@ -224,4 +226,14 @@ class Point //All of the clickable circles are points
 		}
 	}
 }
+
+public class Box //Boxes
+{
+	private boolean green; //track of which player made this box
+	public Box(boolean isPlayer1)
+	{
+		green = isPlayer1;
+	}
 }
+}
+
