@@ -12,35 +12,36 @@ import javafx.scene.shape.*;
 
 
 public class Board extends Application {
-	private Circle[][] board;
+	private BoardPoint[][] board;
 	private ArrayList<Point> theClicked;
 	private int p1Score;
 	private int p2Score;
-	private int previousBoxes; //To prevent recounting the same box
+	private int rLoc;
+	private int cLoc;
+	private int rLoc2;
+	private int cLoc2;
 	private boolean p1Turn;
 	@Override
 	public void start(Stage stage) {
-		stage.setTitle("The Appatar v 0.1.5"); //Stage contains everything
+		stage.setTitle("Dots and Boxes v 0.2.0"); //Stage contains everything
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
-		board = new Circle[4][4];
+		board = new BoardPoint[4][4];
 		p1Turn = true;
 		theClicked = new ArrayList<Point>();
 		int rows = 4 * 100;
 		int columns = 4 * 100;
 		int r = 0;
 		int c = 0;
-		previousBoxes = 0;
 		for(int x = 10; x < rows; x+=100)
 		{
 			for(int y = 10; y < columns; y+= 100)
 			{
-				Circle ci = new Circle(x,y,5);
-				board[r][c] = ci;
+				board[r][c] = new BoardPoint(x,y,5);
+				board[r][c].boardCircle().setStroke(Color.BLACK);
+				root.getChildren().add(board[r][c].boardCircle());
 				c++;
-				ci.setStroke(Color.BLACK);
-				root.getChildren().add(ci);
 			}
 			r++;
 			c = 0;
@@ -57,9 +58,19 @@ public class Board extends Application {
 					{
 						for(int c = 0; c < board[0].length; c++)
 						{
-							if(board[r][c].contains(e.getX(), e.getY()))
+							if(board[r][c].boardCircle().contains(e.getX(), e.getY()))
 							{
-								theClicked.add(new Point(board[r][c].getCenterX(), board[r][c].getCenterY()));
+								theClicked.add(new Point(board[r][c].boardCircle().getCenterX(), board[r][c].boardCircle().getCenterY()));
+								if(theClicked.size() == 1)
+								{
+									rLoc = r;
+									cLoc = c;
+								}
+								else if(theClicked.size() == 2)
+								{
+									rLoc2 = r;
+									cLoc2 = c;
+								}
 							}
 						}
 					}
@@ -105,6 +116,12 @@ public class Board extends Application {
 			theClicked.remove(0);
 			ln = new Line();
 		}
+		else if(theClicked.size() == 2 && (theClicked.get(0).getX() == theClicked.get(1).getX() && theClicked.get(0).getY() == theClicked.get(1).getY()))
+		{
+			theClicked.remove(0);
+			theClicked.remove(0);
+			ln = new Line();
+		}
 		if(theClicked.size() == 2)
 		{
 			int x1 = (int) theClicked.get(0).getX();
@@ -136,23 +153,23 @@ public class Board extends Application {
 	{
 		if(theClicked.get(0).getX() < theClicked.get(1).getX())
 		{
-			theClicked.get(0).setDirectionTrue(2);
-			theClicked.get(1).setDirectionTrue(4);
+			board[rLoc][cLoc].setDirectionTrue(2);
+			board[rLoc2][cLoc2].setDirectionTrue(4);
 		}
 		else if(theClicked.get(0).getX() > theClicked.get(1).getX())
 		{
-			theClicked.get(0).setDirectionTrue(4);
-			theClicked.get(1).setDirectionTrue(2);
+			board[rLoc][cLoc].setDirectionTrue(4);
+			board[rLoc2][cLoc2].setDirectionTrue(2);
 		}
 		else if(theClicked.get(0).getY() < theClicked.get(1).getY())
 		{
-			theClicked.get(0).setDirectionTrue(3);
-			theClicked.get(1).setDirectionTrue(1);
+			board[rLoc][cLoc].setDirectionTrue(3);
+			board[rLoc2][cLoc2].setDirectionTrue(1);
 		}
 		else if(theClicked.get(0).getY() > theClicked.get(1).getY())
 		{
-			theClicked.get(0).setDirectionTrue(1);
-			theClicked.get(1).setDirectionTrue(3);
+			board[rLoc][cLoc].setDirectionTrue(1);
+			board[rLoc2][cLoc2].setDirectionTrue(3);
 	}
 }
 
@@ -224,6 +241,20 @@ class Point //All of the clickable circles are points
 		{
 			return false;
 		}
+	}
+}
+
+public class BoardPoint extends Point //A point AND a circle
+{
+	private Circle c;
+	public BoardPoint(double x, double y, int r)
+	{
+		super(x,y);
+		c = new Circle(x,y,r);
+	}
+	public Circle boardCircle()
+	{
+		return c;
 	}
 }
 
