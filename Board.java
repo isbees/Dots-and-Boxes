@@ -200,5 +200,28 @@ class Point //All of the clickable circles are points
 			d4 = true; 
 		}
 	}
+		public boolean returnDirection(int d) //Return direction value
+	{
+		if(d == 1)
+		{
+			return d1;
+		}
+		else if(d == 2)
+		{
+			return d2;
+		}
+		else if(d == 3)
+		{
+			return d3;
+		}
+		else if(d == 4)
+		{
+			return d4; 
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 }
