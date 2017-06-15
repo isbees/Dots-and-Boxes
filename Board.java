@@ -229,10 +229,31 @@ class Point //All of the clickable circles are points
 
 public class Box //Boxes
 {
+	private boolean[][] tbox; // boxes that are true
 	private boolean green; //track of which player made this box
 	public Box(boolean isPlayer1)
 	{
 		green = isPlayer1;
+		
+	}
+	
+	public void sync(){ //makes all the boxes in t box false. Later spots will become true if they are boxes
+	tbox = new boolean[board.length][board[0].length]
+		for(int a = 0; a < tbox.length; a++){
+			for(int b = 0; b < tbox[0].length; b++){
+				tbox = false;
+			}
+		}
+	}
+	
+	public void checkBoxes(boolean[] boxes){ // checks the 
+		for(int a = 0; a < boxes.length(); a++){
+			for(int b = 0; b < tbox[0].length; b++){
+			if(){
+				
+			}
+			}
+		}
 	}
 }
 }
