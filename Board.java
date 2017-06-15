@@ -64,7 +64,7 @@ public class Board extends Application {
 					Line ln = checkIfPaired();
 					if(ln.getStartX() != 0)
 					{
-						root.getChildren().add(ln);
+						root.getChildren().add(ln); //LINE DRAWN HERE
 					}
 				}
 			}
