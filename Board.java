@@ -76,7 +76,7 @@ public class Board extends Application {
 		launch(args); //Launches the start method above
 	}
 	
-	public Line checkIfPaired()
+	public Line checkIfPaired() //Sees if two clicked spots are dots and if vertical or horizontal, draws a line
 	{
 		Line ln;
 		if(theClicked.size() == 2 && (theClicked.get(0).getX() < theClicked.get(1).getX() && theClicked.get(0).getY() < theClicked.get(1).getY()))
@@ -130,7 +130,7 @@ public class Board extends Application {
 		return ln;
 	}
 	
-	public void setDirections()
+	public void setDirections() //Once a line is, drawn this sets the corresponding directions to true
 	{
 		if(theClicked.get(0).getX() < theClicked.get(1).getX())
 		{
@@ -154,7 +154,7 @@ public class Board extends Application {
 	}
 }
 
-class Point
+class Point //All of the clickable circles are points
 {
 	private double x;
 	private double y;
@@ -173,7 +173,7 @@ class Point
 	}
 	public double getX(){return x;}
 	public double getY(){return y;}
-	public boolean equals(Point otherPoint)
+	public boolean equals(Point otherPoint) //Checks if two points are in the same place
 	{
 		if(this.getX() == otherPoint.getX() && this.getY() == otherPoint.getY())
 		{
@@ -181,7 +181,7 @@ class Point
 		}
 		return false;
 	}
-	public void setDirectionTrue(int d)
+	public void setDirectionTrue(int d) //Make a direction true
 	{
 		if(d == 1)
 		{
