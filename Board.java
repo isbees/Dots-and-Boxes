@@ -112,12 +112,12 @@ public class Board extends Application {
 			ln = new Line(x1,y1,x2,y2);
 			if(p1Turn == true)
 			{
-				ln.setStroke(Color.GREEN);
+				ln.setStroke(Color.GREEN); //player 1
 				p1Turn = false;
 			}
 			else if(p1Turn == false)
 			{
-				ln.setStroke(Color.RED);
+				ln.setStroke(Color.RED); //player 2
 				p1Turn = true;
 			}
 			theClicked.remove(0);
