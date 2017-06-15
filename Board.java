@@ -12,7 +12,7 @@ import javafx.scene.shape.*;
 
 
 public class Board extends Application {
-	private Circle[][] board;
+	private Circle[][] board;		// contains all dots
 	private ArrayList<Point> theClicked;
 	private int p1Score;
 	private int p2Score;
@@ -23,7 +23,7 @@ public class Board extends Application {
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
-		board = new Circle[4][4];
+		board = new Circle[4][4]; //array 4by4
 		p1Turn = true;
 		theClicked = new ArrayList<Point>();
 		int rows = 4 * 100;
@@ -35,13 +35,13 @@ public class Board extends Application {
 			for(int y = 10; y < columns; y+= 100)
 			{
 				Circle ci = new Circle(x,y,5);
-				board[r][c] = ci;
-				c++;
+				board[r][c] = ci;		//adds the dots into the board
+				c++;				//left to right
 				ci.setStroke(Color.BLACK);
 				root.getChildren().add(ci);
 			}
-			r++;
-			c = 0;
+			r++; 					//down
+			c = 0;					//reset
 		}
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
