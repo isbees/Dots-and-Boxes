@@ -27,7 +27,7 @@ public class Board extends Application {
 	private boolean done;
 	@Override
 	public void start(Stage stage) {
-		stage.setTitle("Dots and Boxes v 0.9.4"); //Stage contains everything
+		stage.setTitle("Dots and Boxes v 1.0.1"); //Stage contains everything
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
@@ -87,18 +87,18 @@ public class Board extends Application {
 					}
 					setDirections();
 					Line ln = checkIfPaired();
-					done = checkSquare();
+					done = checkSquare(); //Checks for made squares and if game is over
 					if(ln.getStartX() != 0)
 					{
 						root.getChildren().add(ln);
 					}
-					if(done)
+					if(done) 
 					{
 						Text t = new Text(120,120,endGame());
 						Group end = new Group();
 						end.getChildren().add(t);
 						Scene curtain = new Scene(end);
-						stage.setScene(curtain);
+						stage.setScene(curtain); //Replaces the scene with the board with the end text
 					}
 				}
 			}
@@ -194,7 +194,7 @@ public class Board extends Application {
 	    }
 	}
 	
-	public boolean checkSquare()
+	public boolean checkSquare() //Checks if your move made any squares and if all nine squars have been made then sends the signal too end the game
 	{
 		boolean finish = true;
 		int curCheck = 0;
@@ -205,10 +205,11 @@ public class Board extends Application {
 				if(board[r][c].retDir(2) && board[r][c].retDir(3) && board[r][c+1].retDir(2) && board[r+1][c].retDir(3))
 				{
 					squaresMade[curCheck] = true;
-					if(boxList[curCheck] == null)
+					if(boxList[curCheck] == null) //To avoid adding the same box multiple times
 					{
-						boxList[curCheck] = new Box(p1Turn);
-						System.out.println("It's a boy!");
+						boxList[curCheck] = new Box(!p1Turn);
+						//System.out.println("It's a boy!"); //This was to check some stuff, kept because it's funny
+						p1Turn = !p1Turn; //Box buikder gets another turn
 					}
 				}
 				curCheck++;
@@ -216,7 +217,7 @@ public class Board extends Application {
 		}
 		for(int i = 0; i < squaresMade.length; i++)
 		{
-			if(squaresMade[i] == false)
+			if(squaresMade[i] == false) //Even one unmade square means game continues
 			{
 				finish = false;
 			}
@@ -224,7 +225,7 @@ public class Board extends Application {
 		return finish;
 	}
 	
-	public String endGame()
+	public String endGame() //Used when checkSquare sets "done" to true
 	{
 		for(int i = 0; i < squaresMade.length; i++)
 		{
@@ -245,7 +246,7 @@ public class Board extends Application {
 		{
 			return "Player Two Wins!";
 		}
-		else
+		else //should never happen but just in case
 		{
 			return "It's a draw!";
 		}
