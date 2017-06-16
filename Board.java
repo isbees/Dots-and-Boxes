@@ -9,11 +9,13 @@ import javafx.scene.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Text;
 
 
 public class Board extends Application {
 	private BoardPoint[][] board;
 	private ArrayList<Point> theClicked;
+	Box[] boxList;
 	private boolean[] squaresMade;
 	private int p1Score;
 	private int p2Score;
@@ -22,9 +24,10 @@ public class Board extends Application {
 	private int rLoc2;
 	private int cLoc2;
 	private boolean p1Turn;
+	private boolean done;
 	@Override
 	public void start(Stage stage) {
-		stage.setTitle("Dots and Boxes v 0.2.0"); //Stage contains everything
+		stage.setTitle("Dots and Boxes v 0.9.4"); //Stage contains everything
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
@@ -33,6 +36,7 @@ public class Board extends Application {
 		{
 			squaresMade[i] = false;
 		}
+		boxList = new Box[9];
 		board = new BoardPoint[4][4];
 		p1Turn = true;
 		theClicked = new ArrayList<Point>();
@@ -40,6 +44,7 @@ public class Board extends Application {
 		int columns = 4 * 100;
 		int r = 0;
 		int c = 0;
+		done = false;
 		for(int x = 10; x < rows; x+=100)
 		{
 			for(int y = 10; y < columns; y+= 100)
@@ -82,9 +87,18 @@ public class Board extends Application {
 					}
 					setDirections();
 					Line ln = checkIfPaired();
+					done = checkSquare();
 					if(ln.getStartX() != 0)
 					{
 						root.getChildren().add(ln);
+					}
+					if(done)
+					{
+						Text t = new Text(120,120,endGame());
+						Group end = new Group();
+						end.getChildren().add(t);
+						Scene curtain = new Scene(end);
+						stage.setScene(curtain);
 					}
 				}
 			}
@@ -158,41 +172,82 @@ public class Board extends Application {
 	
 	public void setDirections() //Once a line is, drawn this sets the corresponding directions to true
 	{
-		if(theClicked.get(0).getX() < theClicked.get(1).getX())
+		if(theClicked.size() == 2 && theClicked.get(0).getX() < theClicked.get(1).getX())
 		{
 			board[rLoc][cLoc].setDirectionTrue(2);
 			board[rLoc2][cLoc2].setDirectionTrue(4);
 		}
-		else if(theClicked.get(0).getX() > theClicked.get(1).getX())
+		else if(theClicked.size() == 2 && theClicked.get(0).getX() > theClicked.get(1).getX())
 		{
 			board[rLoc][cLoc].setDirectionTrue(4);
 			board[rLoc2][cLoc2].setDirectionTrue(2);
 		}
-		else if(theClicked.get(0).getY() < theClicked.get(1).getY())
+		else if(theClicked.size() == 2 && theClicked.get(0).getY() < theClicked.get(1).getY())
 		{
 			board[rLoc][cLoc].setDirectionTrue(3);
 			board[rLoc2][cLoc2].setDirectionTrue(1);
 		}
-		else if(theClicked.get(0).getY() > theClicked.get(1).getY())
+		else if(theClicked.size() == 2 && theClicked.get(0).getY() > theClicked.get(1).getY())
 		{
 			board[rLoc][cLoc].setDirectionTrue(1);
 			board[rLoc2][cLoc2].setDirectionTrue(3);
 	    }
 	}
 	
-	public void checkSquare()
+	public boolean checkSquare()
 	{
+		boolean finish = true;
 		int curCheck = 0;
 		for(int r = 0; r < board.length - 1; r++)
 		{
 			for(int c = 0; c < board[0].length - 1; c++)
 			{
-				if(board[r][c].retDir(2) && board[r][c].retDir(3) && board[r+1][c].retDir(2))
+				if(board[r][c].retDir(2) && board[r][c].retDir(3) && board[r][c+1].retDir(2) && board[r+1][c].retDir(3))
 				{
 					squaresMade[curCheck] = true;
+					if(boxList[curCheck] == null)
+					{
+						boxList[curCheck] = new Box(p1Turn);
+						System.out.println("It's a boy!");
+					}
 				}
 				curCheck++;
 			}
+		}
+		for(int i = 0; i < squaresMade.length; i++)
+		{
+			if(squaresMade[i] == false)
+			{
+				finish = false;
+			}
+		}
+		return finish;
+	}
+	
+	public String endGame()
+	{
+		for(int i = 0; i < squaresMade.length; i++)
+		{
+			if(boxList[i].getPlayer() == true)
+			{
+				p1Score++;
+			}
+			else
+			{
+				p2Score++;
+			}
+		}
+		if(p1Score > p2Score)
+		{
+			return "Player One Wins!";
+		}
+		else if(p1Score < p2Score)
+		{
+			return "Player Two Wins!";
+		}
+		else
+		{
+			return "It's a draw!";
 		}
 	}
 
@@ -287,6 +342,11 @@ public class Board extends Application {
 		public Box(boolean isPlayer1)
 		{
 			green = isPlayer1;
+		}
+		
+		public boolean getPlayer()
+		{
+			return green;
 		}
 	}
 }
