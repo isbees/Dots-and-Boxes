@@ -14,6 +14,7 @@ import javafx.scene.shape.*;
 public class Board extends Application {
 	private BoardPoint[][] board;
 	private ArrayList<Point> theClicked;
+	private boolean[] squaresMade;
 	private int p1Score;
 	private int p2Score;
 	private int rLoc;
@@ -27,6 +28,11 @@ public class Board extends Application {
 		Group root = new Group();
 		stage.setWidth(375);
 		stage.setHeight(375);
+		squaresMade = new boolean[9];
+		for(int i = 0; i < squaresMade.length; i++)
+		{
+			squaresMade[i] = false;
+		}
 		board = new BoardPoint[4][4];
 		p1Turn = true;
 		theClicked = new ArrayList<Point>();
@@ -74,6 +80,7 @@ public class Board extends Application {
 							}
 						}
 					}
+					setDirections();
 					Line ln = checkIfPaired();
 					if(ln.getStartX() != 0)
 					{
@@ -170,122 +177,116 @@ public class Board extends Application {
 		{
 			board[rLoc][cLoc].setDirectionTrue(1);
 			board[rLoc2][cLoc2].setDirectionTrue(3);
+	    }
 	}
-}
+	
+	public void checkSquare()
+	{
+		int curCheck = 0;
+		for(int r = 0; r < board.length - 1; r++)
+		{
+			for(int c = 0; c < board[0].length - 1; c++)
+			{
+				if(board[r][c].retDir(2) && board[r][c].retDir(3) && board[r+1][c].retDir(2))
+				{
+					squaresMade[curCheck] = true;
+				}
+				curCheck++;
+			}
+		}
+	}
 
-class Point //All of the clickable circles are points
-{
-	private double x;
-	private double y;
-	private boolean d1;
-	private boolean d2;
-	private boolean d3;
-	private boolean d4;
-	public Point(double x, double y)
+	class Point //All of the clickable circles are points
 	{
-		this.x = x;
-		this.y = y;
-		d1 = false;
-		d2 = false;
-		d3 = false;
-		d4 = false;
-	}
-	public double getX(){return x;}
-	public double getY(){return y;}
-	public boolean equals(Point otherPoint) //Checks if two points are in the same place
-	{
-		if(this.getX() == otherPoint.getX() && this.getY() == otherPoint.getY())
+		private double x;
+		private double y;
+		private boolean d1;
+		private boolean d2;
+		private boolean d3;
+		private boolean d4;
+		public Point(double x, double y)
 		{
-			return true;
+			this.x = x;
+			this.y = y;
+			d1 = false;
+			d2 = false;
+			d3 = false;
+			d4 = false;
 		}
-		return false;
-	}
-	public void setDirectionTrue(int d) //Make a direction true
-	{
-		if(d == 1)
+		public double getX(){return x;}
+		public double getY(){return y;}
+		public boolean equals(Point otherPoint) //Checks if two points are in the same place
 		{
-			d1 = true;
-		}
-		else if(d == 2)
-		{
-			d2 = true;
-		}
-		else if(d == 3)
-		{
-			d3 = true;
-		}
-		else if(d == 4)
-		{
-			d4 = true; 
-		}
-	}
-	public boolean returnDirection(int d) //Return direction value
-	{
-		if(d == 1)
-		{
-			return d1;
-		}
-		else if(d == 2)
-		{
-			return d2;
-		}
-		else if(d == 3)
-		{
-			return d3;
-		}
-		else if(d == 4)
-		{
-			return d4; 
-		}
-		else
-		{
+			if(this.getX() == otherPoint.getX() && this.getY() == otherPoint.getY())
+			{
+				return true;
+			}
 			return false;
 		}
-	}
-}
-
-public class BoardPoint extends Point //A point AND a circle
-{
-	private Circle c;
-	public BoardPoint(double x, double y, int r)
-	{
-		super(x,y);
-		c = new Circle(x,y,r);
-	}
-	public Circle boardCircle()
-	{
-		return c;
-	}
-}
-
-public class Box //Boxes
-{
-	private boolean[][] tbox; // boxes that are true
-	private boolean green; //track of which player made this box
-	public Box(boolean isPlayer1)
-	{
-		green = isPlayer1;
-		
-	}
-	
-	public void sync(){ //makes all the boxes in t box false. Later spots will become true if they are boxes
-	tbox = new boolean[board.length][board[0].length]
-		for(int a = 0; a < tbox.length; a++){
-			for(int b = 0; b < tbox[0].length; b++){
-				tbox = false;
+		public void setDirectionTrue(int d) //Make a direction true
+		{
+			if(d == 1)
+			{
+				d1 = true;
+			}
+			else if(d == 2)
+			{
+				d2 = true;
+			}
+			else if(d == 3)
+			{
+				d3 = true;
+			}
+			else if(d == 4)
+			{
+				d4 = true; 
+			}
+		}
+		public boolean retDir(int d) //Return direction value
+		{
+			if(d == 1)
+			{
+				return d1;
+			}
+			else if(d == 2)
+			{
+				return d2;
+			}
+			else if(d == 3)
+			{
+				return d3;
+			}
+			else if(d == 4)
+			{
+				return d4; 
+			}
+			else
+			{
+				return false;
 			}
 		}
 	}
-	
-	public void checkBoxes(boolean[] boxes){ // checks the 
-		for(int a = 0; a < boxes.length(); a++){
-			for(int b = 0; b < tbox[0].length; b++){
-			if(){
-				
-			}
-			}
+
+	public class BoardPoint extends Point //A point AND a circle
+	{	
+		private Circle c;
+		public BoardPoint(double x, double y, int r)
+		{
+			super(x,y);
+			c = new Circle(x,y,r);
+		}
+		public Circle boardCircle()
+		{
+			return c;
+		}
+	}
+
+	public class Box //Boxes
+	{
+		private boolean green; //track of which player made this box
+		public Box(boolean isPlayer1)
+		{
+			green = isPlayer1;
 		}
 	}
 }
-}
-
